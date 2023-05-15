@@ -62,7 +62,9 @@ export function requestOpenaiClient(path: string) {
 export async function requestChat(messages: Message[]) {
   const req: ChatRequest = makeRequestParam(messages, { filterBot: true });
 
-  const res = await requestOpenaiClient("v1/chat/completions")(req);
+  const res = await requestOpenaiClient(
+    "openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01",
+  )(req);
 
   try {
     const response = (await res.json()) as ChatReponse;
@@ -119,7 +121,7 @@ export async function requestChatStream(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        path: "v1/chat/completions",
+        path: "openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01", // "v1/chat/completions",
         ...getHeaders(),
       },
       body: JSON.stringify(req),
